@@ -9,7 +9,8 @@ from homeassistant.const import (
     LIGHT_LUX,
     CONCENTRATION_PARTS_PER_MILLION,
     UnitOfTemperature,
-    UnitOfPressure
+    UnitOfPressure,
+    CONCENTRATION_PARTS_PER_CUBIC_METER
 )
 from collections import namedtuple
 
@@ -103,8 +104,8 @@ i2c_classes = {
         DeviceType(SensorDeviceClass.HUMIDITY, PERCENTAGE, None),
         DeviceType(SensorDeviceClass.TEMPERATURE, UnitOfTemperature.CELSIUS, None),
     ],
-    "sht31": [
-        DeviceType(SensorDeviceClass.HUMIDITY, PERCENTAGE, None, delay=0.1),
+    'sht31': [
+        DeviceType(SensorDeviceClass.HUMIDITY, PERCENTAGE, None, delay=1.5),
         DeviceType(SensorDeviceClass.TEMPERATURE, UnitOfTemperature.CELSIUS, None),
     ],
     "max44009": [DeviceType(SensorDeviceClass.ILLUMINANCE, LIGHT_LUX, None)],
