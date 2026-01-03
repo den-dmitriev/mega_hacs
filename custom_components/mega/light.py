@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import typing
 from datetime import timedelta, datetime
 from functools import partial
 
@@ -13,13 +12,9 @@ import time
 
 from homeassistant.components.light import (
     PLATFORM_SCHEMA as LIGHT_SCHEMA,
-    SUPPORT_BRIGHTNESS,
     LightEntity,
-    SUPPORT_TRANSITION,
-    SUPPORT_COLOR,
     ColorMode,
-    LightEntityFeature,
-    # SUPPORT_WHITE_VALUE
+    LightEntityFeature
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -124,10 +119,21 @@ async def async_setup_entry(
 class MegaLight(MegaOutPort, LightEntity):
     @property
     def supported_features(self):
-        return (SUPPORT_BRIGHTNESS if self.dimmer else 0) | (
-            SUPPORT_TRANSITION if self.dimmer else 0
-        )
+        return LightEntityFeature.TRANSITION if self.dimmer else LightEntityFeature(0)
 
+    @property
+    def supported_color_modes(self):
+        if self.dimmer:
+            return {ColorMode.BRIGHTNESS}
+        else:
+            return {ColorMode.ONOFF}
+
+    @property
+    def color_mode(self):
+        if self.dimmer:
+            return ColorMode.BRIGHTNESS
+        else:
+            return ColorMode.ONOFF
 
 class MegaRGBW(LightEntity, BaseMegaEntity):
     def __init__(self, *args, **kwargs):
@@ -263,6 +269,7 @@ class MegaRGBW(LightEntity, BaseMegaEntity):
             setattr(self, f"_{item}", value)
             if item == "rgb_color":
                 _after = map_reorder_rgb(value, RGB, self._color_order)
+                self._hs_color = colorsys.rgb_to_hsv(*value)
         _after = _after or self.get_rgbw()
         self._rgb_color = map_reorder_rgb(tuple(_after[:3]), self._color_order, RGB)
         if transition is None:

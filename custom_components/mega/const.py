@@ -1,6 +1,7 @@
 """Constants for the mega integration."""
 import re
 from itertools import permutations
+from homeassistant.const import Platform
 
 DOMAIN = "mega"
 CONF_MEGA_ID = "mega_id"
@@ -53,10 +54,10 @@ CONF_FILTER_HIGH = 'filter_high'
 CONF_1WBUS = '1wbus'
 CONF_ADDR = 'addr'
 PLATFORMS = [
-    "light",
-    "switch",
-    "binary_sensor",
-    "sensor",
+    Platform.LIGHT,
+    Platform.SWITCH,
+    Platform.BINARY_SENSOR,
+    Platform.SENSOR,
 ]
 EVENT_BINARY_SENSOR = f'{DOMAIN}.sensor'
 EVENT_BINARY = f'{DOMAIN}.binary'
@@ -71,6 +72,7 @@ LUX = 'lux'
 SINGLE_CLICK = 'single'
 DOUBLE_CLICK = 'double'
 
+PATT_MODEL = re.compile(r'^(.+?)\s')
 PATT_FW = re.compile(r'fw:\s(.+?)\)')
 
 REMOVE_CONFIG = [
