@@ -14,7 +14,6 @@ from homeassistant.const import (
     CONF_PORT,
 )
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.helpers.service import bind_hass
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 from homeassistant.config_entries import ConfigEntry
@@ -340,7 +339,6 @@ async def _save_service(hass: HomeAssistant, call: ServiceCall):
                 await hub.save()
 
 
-@bind_hass
 async def _get_port(hass: HomeAssistant, call: ServiceCall):
     port = call.data.get("port")
     mega_id = call.data.get("mega_id")
@@ -368,7 +366,6 @@ async def _get_port(hass: HomeAssistant, call: ServiceCall):
             hub.updater.async_set_updated_data(hub.values)
 
 
-@bind_hass
 async def _run_cmd(hass: HomeAssistant, call: ServiceCall):
     mega_id = call.data.get("mega_id")
     cmd = call.data.get("cmd")
